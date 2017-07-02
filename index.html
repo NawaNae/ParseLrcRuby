@@ -7,6 +7,8 @@
     <script src="js/parselrc.js"></script>
 </head>
 <body>
-    <textarea id="lrcinput"></textarea>
+    <textarea id="lrcinput" onclick=""></textarea>
+    <a onclick="document.getElementById('display').innerHTML = parseLrc(document.getElementById('lrcinput').value, document.getElementById('sign1').value, document.getElementById('sign2').value); ">input</a><input id="sign1" type="text" value="("/><input id="sign2" type="text" value=")" />
+    <div id="display"></div>
 </body>
 </html>
