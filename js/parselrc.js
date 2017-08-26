@@ -10,29 +10,30 @@ function parseLrc(LrcStr, Sign1, Sign2) {
     ans = "<pre class='lrc'>";
     var finalKanji;
     var finalRubyText;
+
     while (LrcStr.indexOf(Sign1) != -1) {
-        nowi = 0;
-        finalKanji = LrcStr.indexOf(Sign1) - 1;
-        ans += LrcStr.substring(nowi, getKanjiStrBeforeFirstIndex(LrcStr, finalKanji));
-        nowi = getKanjiStrBeforeFirstIndex(LrcStr, finalKanji);
+        nowi = 0;//處理指標
+        finalKanji = LrcStr.indexOf(Sign1) - 1;//左括弧前第一個字為最後一個漢字
+        ans += LrcStr.substring(nowi, getKanjiFirstIndex(LrcStr, finalKanji));//從處理指標往後到第一個漢字之前
+        nowi = getKanjiFirstIndex(LrcStr, finalKanji);
         ans += "<ruby><rb>";
-        ans += LrcStr.substring(nowi, finalKanji + 1);
+        ans += LrcStr.substring(nowi, finalKanji + 1);//漢字串
         ans += "</rb><rp>" + Sign1 + "</rp><rt>";
-        nowi = finalKanji + 2;
-        finalRubyText = LrcStr.indexOf(Sign2) - 1;
-        ans += LrcStr.substring(nowi, finalRubyText + 1);
+        nowi = finalKanji + 2;//括號後1字(注音第一字)
+        finalRubyText = LrcStr.indexOf(Sign2) - 1;//後括號前1字(注音末字)
+        ans += LrcStr.substring(nowi, finalRubyText + 1);//串入
         ans += "</rt><rp>" + Sign2 + "</rp></ruby>";
-        LrcStr = LrcStr.substring(finalRubyText+2, LrcStr.length);
+        LrcStr = LrcStr.substring(finalRubyText+2, LrcStr.length);//將前端字串移除
     }
     ans += LrcStr;
-    ans += "</pre>";
+    ans += "</pre>"; LrcStr = LrcStr.replace(/\n/, "<br>");
     return ans;
 }
 function judgeNotKanJi(chr)//找平假名OR片假名
 {
-    return ('ぁ' <= chr && chr <= 'ゟ') || ('゠' <= chr && chr <= 'ㇿ'); 
+    return ('ぁ' <= chr && chr <= 'ゟ') || ('゠' <= chr && chr <= 'ㇿ') || chr == ' ' || chr == '　' || chr == ',' || chr == '.' || chr == '。' || chr == '，' || chr == '\n'; 
 }
-function getKanjiStrBeforeFirstIndex(LrcStr, index)
+function getKanjiFirstIndex(LrcStr, index)//從最後一個漢字找到第一個漢字
 {
     for (; index >= 0; index--)
     {
